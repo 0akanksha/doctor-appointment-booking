@@ -16,9 +16,12 @@ const distDir = path.join(projectRoot, 'dist')
 export async function createApp() {
   const isProduction = process.env.NODE_ENV === 'production'
   const app = express()
+  app.set('trust proxy', 1)
 
   app.use(express.json())
   app.use(cookieParser())
+
+  app.get('/api/health', (_req, res) => res.json({ ok: true }))
 
   app.use('/api/auth', authRouter)
   app.use('/api/doctors', doctorsRouter)
